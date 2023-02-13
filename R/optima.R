@@ -1,28 +1,28 @@
 #' optima object
 #'
 #' An optima object contains DNA, protein and CNV for Tapestri platform
-#' single cell sequencing data. 
+#' single cell sequencing data.
 #'
 #' @slot meta.data user defined metadata can be kept with the object
-#' @slot cell.ids a vector of cell IDs/barcodes from Tapestri. This 
+#' @slot cell.ids a vector of cell IDs/barcodes from Tapestri. This
 #' vector should contain unique IDs
-#' @slot cell.labels a vector that is used to store the cell type information 
+#' @slot cell.labels a vector that is used to store the cell type information
 #' for each cell
-#' @slot variants a vector of variant IDs 
-#' @slot variant.filter a string that keeps track of if optima object is being QC filtered 
-#' on its variant matrix  
-#' @slot vaf.mtx variant matrix 
+#' @slot variants a vector of variant IDs
+#' @slot variant.filter a string that keeps track of if optima object is being QC filtered
+#' on its variant matrix
+#' @slot vaf.mtx variant matrix
 #' @slot gt.mtx genotype matrix
 #' @slot dp.mtx sequencing depth matrix
 #' @slot gq.mtx genotype quality
 #' @slot amps a vector of CNV locus
-#' @slot amp.normalized.method a string that keeps track of if optima object is being normalized 
-#' on its CNV matrix 
+#' @slot amp.normalized.method a string that keeps track of if optima object is being normalized
+#' on its CNV matrix
 #' @slot amp.mtx CNV matrix
 #' @slot ploidy.mtx ploidy matrix
-#' @slot proteins a vector of surface protein id 
-#' @slot protein.normalize.method a string that keeps track of if optima object is being normalized 
-#' on its protein matrix  
+#' @slot proteins a vector of surface protein id
+#' @slot protein.normalize.method a string that keeps track of if optima object is being normalized
+#' on its protein matrix
 #' @slot protein.mtx protein matrix
 #' @return Object containing DNA, protein and CNV single cell sequencing data.
 #' @examples setClass()
@@ -33,7 +33,7 @@ optima <- setClass("optima", slots=list(meta.data = "character",
                                         # cell labels vector contains cell clone info
                                         # could be assigned manually or using clustering method
                                         cell.labels = "character",
-                                        
+
                                         # "variants" vector stores variant labels
                                         variants = "character",
                                         variant.filter = "character",
@@ -41,13 +41,13 @@ optima <- setClass("optima", slots=list(meta.data = "character",
                                         gt.mtx = "matrix",
                                         dp.mtx = "matrix",
                                         gq.mtx = "matrix",
-                                        
+
                                         # CNVs
                                         amps = "character",
                                         amp.normalize.method = "character",
                                         amp.mtx = "matrix",
                                         ploidy.mtx = "matrix",
-                                        
+
                                         # The "protein"  vector stores protein labels
                                         proteins = "character",
                                         protein.normalize.method = "character",
@@ -94,10 +94,10 @@ names.optima <- function(x) {
 
 #' Dimension reduction function.
 #'
-#' This function reduces dimensions for a data matrix, such data matrix 
+#' This function reduces dimensions for a data matrix, such data matrix
 #' can be protein or DNA matrix in an optima object.
 #'
-#' @param input.mtx Input optima object.
+#' @param input.mtx Input optima object
 #' @import umap
 #' @return List containing PCA result and umap result derived from first 5 PCs
 #' @examples reduceDim(example.matrix)
@@ -112,7 +112,7 @@ reduceDim <- function(input.mtx){
 
 #' Heatmap function
 #'
-#' This function creates a heatmap using matrix data, such matrix 
+#' This function creates a heatmap using matrix data, such matrix
 #' data can be DNA or protein.
 #'
 #' @param optima.obj optima object.

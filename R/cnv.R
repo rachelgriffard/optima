@@ -1,10 +1,10 @@
 #' CNV normalization function
 #'
-#' The function normalizes the CNV matrix to correct for column wise and row wise variation and 
+#' The function normalizes the CNV matrix to correct for column-wise and row-wise variation and
 #' updates the optima object amp.normalize.method from "unnormalized" to "normalized".
-#' 
-#' @param optima.obj optima object.
-#' @return optima object with normalized CNV. the amp.normalize.method will be updated to "normalized"
+#'
+#' @param optima.obj optima object
+#' @return optima object with normalized CNV and amp.normalize.method updated to "normalized"
 #' @keywords optima.obj
 #' @export
 #' @examples normalizeCNV(optima.obj)
@@ -28,11 +28,11 @@ normalizeCNV <- function(optima.obj){
 
 #' CNV ploidy calculation function
 #'
-#' The function used normalized CNV matrix to calculate the ploidy for each CNV locus.
+#' The function uses the normalized CNV matrix to calculate the ploidy for each CNV locus.
 #'
 #' @param optima.obj optima object.
-#' @param diploid.cell the cell type that should be considered as diploid cell
-#' @return optima object with normalized CNV.
+#' @param diploid.cell Cell type that should be considered as diploid cell
+#' @return optima object with normalized CNV
 #' @keywords optima.obj with ploidy.mtx being updated
 #' @export
 #' @examples calculatePloidy(optima.obj)
@@ -60,11 +60,11 @@ calculatePloidy <- function(optima.obj, diploid.cell){
 
 #' Ploidy scatter plot function
 #'
-#' For a specified cell type, the function creates a scatter plot indicating 
-#' ploidy for different CNV loci. 
+#' For a specified cell type, this function creates a scatter plot indicating
+#' ploidy for different CNV loci.
 #'
-#' @param optima.obj optima object.
-#' @param cell.type String that indicates which cell type.
+#' @param optima.obj optima object
+#' @param cell.type String that indicates which cell type
 #' @return optima object with normalized CNV.
 #' @keywords optima.obj
 #' @export

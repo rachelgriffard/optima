@@ -13,7 +13,7 @@ getInfo(variant)
 Annotation information for one specific variant ID.
 }
 \description{
-Returns annotation from one variant ID. This function is not visable to users
+This function returns the annotation from one variant ID. This function is not visable to users.
 }
 \examples{
 getInfo(variant_id)

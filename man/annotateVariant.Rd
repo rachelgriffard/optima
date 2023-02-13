@@ -14,7 +14,7 @@ a data frame with annotation for all input variant IDs.
 }
 \description{
 This function takes variant names as input and
-returns annotation for annotation table for all variant IDs in a data frame.
+returns an annotation table for all variant IDs in a data frame.
 }
 \examples{
 annotateVariant(variants_id)

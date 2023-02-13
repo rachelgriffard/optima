@@ -7,7 +7,7 @@
 getClones(optima.obj, eps = 1, minPts = 100, plot = FALSE)
 }
 \arguments{
-\item{optima.obj}{optima object.}
+\item{optima.obj}{optima object}
 
 \item{eps}{size/radius of the epsilon neighborhood.
 This argument will passed to dbscan function.}

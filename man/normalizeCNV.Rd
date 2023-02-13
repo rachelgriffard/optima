@@ -7,13 +7,13 @@
 normalizeCNV(optima.obj)
 }
 \arguments{
-\item{optima.obj}{optima object.}
+\item{optima.obj}{optima object}
 }
 \value{
-optima object with normalized CNV. the amp.normalize.method will be updated to "normalized"
+optima object with normalized CNV and amp.normalize.method updated to "normalized"
 }
 \description{
-The function normalizes the CNV matrix to correct for column wise and row wise variation and
+The function normalizes the CNV matrix to correct for column-wise and row-wise variation and
 updates the optima object amp.normalize.method from "unnormalized" to "normalized".
 }
 \examples{

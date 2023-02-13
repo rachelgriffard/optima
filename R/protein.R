@@ -1,9 +1,9 @@
 #' Protein matrix normalization
 #'
-#' The function normalizes protein matrix within an optima object using
+#' The function normalizes the protein matrix within an optima object using
 #' CLR method.
 #'
-#' @param optima.obj optima object.
+#' @param optima.obj optima object
 #' @return An optima object with protein matrix being normalized and
 #'  protein.normalize.method label updated to "normalized"
 #' @import compositions
@@ -26,11 +26,11 @@ normalizeProtein <- function(optima.obj) {
 #' Identify signature protein function
 #'
 #' This function compares protein levels for a input cell type against all other
-#' cells using t test. This function returns a data frame ranked by
+#' cells using t test and returns a data frame ranked by
 #' FDR adjusted p-value.
 #'
-#' @param optima.obj optima object.
-#' @param cell.type Input cell type to compare protein level to all other cell types.
+#' @param optima.obj optima object
+#' @param cell.type Input cell type to compare protein level to all other cell types
 #' @return Data frame of all proteins p-values comparing protein levels of input
 #' cell type to all other cell types.
 #' @keywords optima.obj, cell.type

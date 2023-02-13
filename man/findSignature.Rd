@@ -7,9 +7,9 @@
 findSignature(optima.obj, cell.type)
 }
 \arguments{
-\item{optima.obj}{optima object.}
+\item{optima.obj}{optima object}
 
-\item{cell.type}{Input cell type to compare protein level to all other cell types.}
+\item{cell.type}{Input cell type to compare protein level to all other cell types}
 }
 \value{
 Data frame of all proteins p-values comparing protein levels of input
@@ -17,7 +17,7 @@ cell type to all other cell types.
 }
 \description{
 This function compares protein levels for a input cell type against all other
-cells using t test. This function returns a data frame ranked by
+cells using t test and returns a data frame ranked by
 FDR adjusted p-value.
 }
 \examples{

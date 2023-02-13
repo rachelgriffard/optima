@@ -9,13 +9,13 @@ calculatePloidy(optima.obj, diploid.cell)
 \arguments{
 \item{optima.obj}{optima object.}
 
-\item{diploid.cell}{the cell type that should be considered as diploid cell}
+\item{diploid.cell}{Cell type that should be considered as diploid cell}
 }
 \value{
-optima object with normalized CNV.
+optima object with normalized CNV
 }
 \description{
-The function used normalized CNV matrix to calculate the ploidy for each CNV locus.
+The function uses the normalized CNV matrix to calculate the ploidy for each CNV locus.
 }
 \examples{
 calculatePloidy(optima.obj)

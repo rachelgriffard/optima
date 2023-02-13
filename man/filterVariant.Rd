@@ -16,7 +16,7 @@ filterVariant(
 )
 }
 \arguments{
-\item{optima.obj}{an optima object with raw data unfiltered}
+\item{optima.obj}{optima object with raw, unfiltered}
 
 \item{min.dp}{minimum depth, defaults to 10}
 
@@ -28,9 +28,9 @@ filterVariant(
 
 \item{vaf.het}{If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3}
 
-\item{min.cell.pt}{minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter.}
+\item{min.cell.pt}{minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter}
 
-\item{min.mut.cell.pt}{minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter.}
+\item{min.mut.cell.pt}{minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter}
 }
 \value{
 an optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".

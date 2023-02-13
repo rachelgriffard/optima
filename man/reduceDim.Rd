@@ -7,7 +7,7 @@
 reduceDim(input.mtx)
 }
 \arguments{
-\item{input.mtx}{Input optima object.}
+\item{input.mtx}{Input optima object}
 }
 \value{
 List containing PCA result and umap result derived from first 5 PCs

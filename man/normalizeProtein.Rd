@@ -7,14 +7,14 @@
 normalizeProtein(optima.obj)
 }
 \arguments{
-\item{optima.obj}{optima object.}
+\item{optima.obj}{optima object}
 }
 \value{
 An optima object with protein matrix being normalized and
 protein.normalize.method label updated to "normalized"
 }
 \description{
-The function normalizes protein matrix within an optima object using
+The function normalizes the protein matrix within an optima object using
 CLR method.
 }
 \examples{

@@ -7,15 +7,15 @@
 plotPloidy(optima.obj, cell.type)
 }
 \arguments{
-\item{optima.obj}{optima object.}
+\item{optima.obj}{optima object}
 
-\item{cell.type}{String that indicates which cell type.}
+\item{cell.type}{String that indicates which cell type}
 }
 \value{
 optima object with normalized CNV.
 }
 \description{
-For a specified cell type, the function creates a scatter plot indicating
+For a specified cell type, this function creates a scatter plot indicating
 ploidy for different CNV loci.
 }
 \examples{

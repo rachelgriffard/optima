@@ -7,7 +7,7 @@
 readHdf5(directory)
 }
 \arguments{
-\item{directory}{Directory for the input h5 file .}
+\item{directory}{Directory for the input h5 file}
 }
 \value{
 optima object
