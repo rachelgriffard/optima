@@ -1,13 +1,13 @@
 #' DNA Variant filter function
-#' 
-#' 
+#'
+#'
 #' This function uses multiple matrices imported from the h5 file to conduct quality filtering.
 #' This includes the sequencing depth matrix, genotype matrix, variant allele frequency matrix, genotype quality matrix
-#' The function returns an optima object that has been filtered with variant/cells. 
+#' The function returns an optima object that has been filtered with variant/cells.
 #' In addition, the returned optima object's variant.filter label is changed to "filtered".
-#' This function is usually applied before protein and CNV analysis. 
+#' This function is usually applied before protein and CNV analysis.
 #'
-#' @param optima.obj an optima object with raw data unfiltered.
+#' @param optima.obj an optima object with raw data unfiltered
 #' @param min.dp minimum depth, defaults to 10
 #' @param min.gq minimum genotype quality, defaults to 30
 #' @param vaf.ref If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3
@@ -15,7 +15,7 @@
 #' @param vaf.het If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3
 #' @param min.cell.pt minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter.
 #' @param min.mut.cell.pt minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter.
-#' @return an optima object, The DNA data in the object is filtered, the variant.filter label is "filtered". 
+#' @return an optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".
 #' Meanwhile, the protein matrix and CNV matrix is also updated so that only cells withstand DNA variant filter are kept.
 #' @keywords filter DNA
 #' @export
@@ -142,7 +142,7 @@ getInfo <- function(variant){
 
 #' Variant annotation
 #'
-#' This function takes variant names as input and 
+#' This function takes variant names as input and
 #' returns annotation for annotation table for all variant IDs in a data frame.
 #'
 #' @param variant.names input variant IDs, can be a vector.
@@ -150,7 +150,7 @@ getInfo <- function(variant){
 #' @return a data frame with annotation for all input variant IDs.
 #' @export
 #' @examples annotateVariant(variants_id)
-#' 
+#'
 annotateVariant <- function(variant.names){
   # initiate empty dataframe using NULL
   ret <- NULL
@@ -178,12 +178,12 @@ annotateVariant <- function(variant.names){
 #' This function identifies cell clones based on DNA variant data.
 #'
 #' @param optima.obj optima object.
-#' @param eps size/radius of the epsilon neighborhood. 
+#' @param eps size/radius of the epsilon neighborhood.
 #' This argument will passed to dbscan function.
-#' @param minPts number of minimum points required in the eps neighborhood 
-#' for core points, including the point itself. 
+#' @param minPts number of minimum points required in the eps neighborhood
+#' for core points, including the point itself.
 #' This argument will passed to dbscan function.
-#' @param plot if True, a UMAP plot will be generated based on the dimension reduction 
+#' @param plot if True, a UMAP plot will be generated based on the dimension reduction
 #' result from variant matrix.
 #' Default is FALSE.
 #' @import dbscan

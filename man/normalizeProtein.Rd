@@ -7,7 +7,7 @@
 normalizeProtein(optima.object)
 }
 \arguments{
-\item{optima.obj}{optima object}
+\item{optima.obj}{an optima object with raw data unfiltered}
 }
 \value{
 An optima object with protein matrix being normalized and

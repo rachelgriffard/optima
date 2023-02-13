@@ -3,10 +3,10 @@
 #' The function normalizes protein matrix within an optima object using
 #' CLR method.
 #'
-#' @param optima.obj an optima object with raw data unfiltered
-#' @import compositions
+#' @param optima.obj optima object.
 #' @return An optima object with protein matrix being normalized and
 #'  protein.normalize.method label updated to "normalized"
+#' @import compositions
 #' @keywords optima.obj
 #' @export
 #' @examples normalizeProtein(optima.object)

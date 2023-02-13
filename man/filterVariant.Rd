@@ -16,7 +16,7 @@ filterVariant(
 )
 }
 \arguments{
-\item{optima.obj}{an optima object with raw data unfiltered.}
+\item{optima.obj}{an optima object with raw data unfiltered}
 
 \item{min.dp}{minimum depth, defaults to 10}
 
