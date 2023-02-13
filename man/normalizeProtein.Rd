@@ -10,7 +10,7 @@ normalizeProtein(optima.object)
 \item{optima.obj}{optima object}
 }
 \value{
-an optima object with protein matrix being normalized and
+An optima object with protein matrix being normalized and
 protein.normalize.method label updated to "normalized"
 }
 \description{
