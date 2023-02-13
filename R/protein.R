@@ -9,17 +9,17 @@
 #' @import compositions
 #' @keywords optima.obj
 #' @export
-#' @examples normalizeProtein(optima.object)
+#' @examples normalizeProtein(optima.obj)
 
-normalizeProtein <- function(optima.object) {
+normalizeProtein <- function(optima.obj) {
   # extract count matrix
-  inputMatrix <- optima.object@protein.mtx
+  inputMatrix <- optima.obj@protein.mtx
   # apply normalization CLR method
   ret <- (compositions::clr(inputMatrix + 1))
 
-  optima.object@protein.mtx <- as.matrix(ret)
-  optima.object@protein.normalize.method <- "normalized"
-  return(optima.object)
+  optima.obj@protein.mtx <- as.matrix(ret)
+  optima.obj@protein.normalize.method <- "normalized"
+  return(optima.obj)
 
 }
 

@@ -4,7 +4,7 @@
 \alias{normalizeProtein}
 \title{Protein matrix normalization}
 \usage{
-normalizeProtein(optima.object)
+normalizeProtein(optima.obj)
 }
 \arguments{
 \item{optima.obj}{optima object.}
@@ -18,6 +18,6 @@ The function normalizes protein matrix within an optima object using
 CLR method.
 }
 \examples{
-normalizeProtein(optima.object)
+normalizeProtein(optima.obj)
 }
 \keyword{optima.obj}
