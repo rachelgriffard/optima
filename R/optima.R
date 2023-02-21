@@ -3,27 +3,27 @@
 #' An optima object contains DNA, protein and CNV for Tapestri platform
 #' single cell sequencing data.
 #'
-#' @slot meta.data user defined metadata can be kept with the object
-#' @slot cell.ids a vector of cell IDs/barcodes from Tapestri. This
-#' vector should contain unique IDs
-#' @slot cell.labels a vector that is used to store the cell type information
-#' for each cell
-#' @slot variants a vector of variant IDs
-#' @slot variant.filter a string that keeps track of if optima object is being QC filtered
-#' on its variant matrix
-#' @slot vaf.mtx variant matrix
-#' @slot gt.mtx genotype matrix
-#' @slot dp.mtx sequencing depth matrix
-#' @slot gq.mtx genotype quality
-#' @slot amps a vector of CNV locus
-#' @slot amp.normalized.method a string that keeps track of if optima object is being normalized
-#' on its CNV matrix
-#' @slot amp.mtx CNV matrix
-#' @slot ploidy.mtx ploidy matrix
-#' @slot proteins a vector of surface protein id
-#' @slot protein.normalize.method a string that keeps track of if optima object is being normalized
-#' on its protein matrix
-#' @slot protein.mtx protein matrix
+#' @slot meta.data User-defined metadata can be kept with the object.
+#' @slot cell.ids A vector of cell IDs/barcodes from Tapestri. This
+#' vector should contain unique IDs.
+#' @slot cell.labels A vector that is used to store the cell type information
+#' for each cell.
+#' @slot variants A vector of variant IDs.
+#' @slot variant.filter A string that keeps track of if optima object is being QC filtered
+#' on its variant matrix.
+#' @slot vaf.mtx Variant matrix.
+#' @slot gt.mtx Genotype matrix.
+#' @slot dp.mtx Sequencing depth matrix.
+#' @slot gq.mtx Genotype quality.
+#' @slot amps A vector of CNV locus.
+#' @slot amp.normalized.method A string that keeps track of if optima object is being normalized
+#' on its CNV matrix.
+#' @slot amp.mtx CNV matrix.
+#' @slot ploidy.mtx Ploidy matrix.
+#' @slot proteins A vector of surface protein ID.
+#' @slot protein.normalize.method A string that keeps track of if optima object is being normalized
+#' on its protein matrix.
+#' @slot protein.mtx Protein matrix
 #' @return Object containing DNA, protein and CNV single cell sequencing data.
 #' @examples setClass()
 #' @exportClass optima
@@ -61,9 +61,13 @@ setMethod(
     cat(paste(length(object@cell.ids), "cells\n"))
     cat(paste(length(object@variants), "variants, data", object@variant.filter, "\n"))
     cat(paste(length(object@amps), "CNVs, data", object@amp.normalize.method, "\n"))
-    cat(paste(length(object@proteins), "proteins, data", object@protein.normalize.method, "\n"))
-    cat(paste("Current unique cell labels includes: ", paste(unique(object@cell.labels),  collapse = ", "), "\n"))
 
+    if(object@proteins[1] == "non-protein"){
+      cat("no protein data")
+    } else {
+      cat(paste(length(object@proteins), "proteins, data", object@protein.normalize.method, "\n"))
+      cat(paste("Current unique cell labels includes: ", paste(unique(object@cell.labels),  collapse = ", "), "\n"))
+    }
   }
 )
 
@@ -92,12 +96,12 @@ names.optima <- function(x) {
 }
 
 
-#' Dimension reduction function.
+#' Dimension reduction function
 #'
 #' This function reduces dimensions for a data matrix, such data matrix
 #' can be protein or DNA matrix in an optima object.
 #'
-#' @param input.mtx Input optima object
+#' @param input.mtx Input optima object.
 #' @import umap
 #' @return List containing PCA result and umap result derived from first 5 PCs
 #' @examples reduceDim(example.matrix)
@@ -112,11 +116,13 @@ reduceDim <- function(input.mtx){
 
 #' Heatmap function
 #'
-#' This function creates a heatmap using matrix data, such matrix
+#' This function creates a heatmap using matrix data. Matrix
 #' data can be DNA or protein.
 #'
 #' @param optima.obj optima object.
-#' @param omic.type Type of data for heat map. Potential values "dna" and "protein".
+#' @param omic.type Type of data for heat map. Potential values "dna" and "protein". If "dna"
+#' is specified, then the VAF data will be used for plot. If "protein" is specified, then
+#' protein expression values will be used.
 #' @import pheatmap
 #' @return Heat map visualization.
 #' @examples drawHeatMap()
@@ -162,12 +168,26 @@ drawHeatmap <- function(optima.obj, omic.type){
 
     ##########################################################
     # Heatmap
+    if(omic.type == "protein"){
+      heatmap.title <- paste("Heatmap for",
+                             optima.obj$meta.data,
+                             optima.obj$protein.normalize.method,
+                             omic.type, "expression")
+    } else if (omic.type == "dna"){
+      heatmap.title <- paste("Heatmap for",
+                             optima.obj$meta.data,
+                             optima.obj$variant.filter,
+                             "DNA VAF")
+    }
+
 
     pheatmap::pheatmap(input.mtx,
                        treeheight_row = 0,
                        treeheight_col = 0,
                        cluster_rows=FALSE,
                        annotation_row = row.anno,
-                       show_rownames=FALSE)
+                       show_rownames=FALSE,
+                       main = heatmap.title)
+
   }
 }

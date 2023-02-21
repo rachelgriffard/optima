@@ -9,7 +9,8 @@ calculatePloidy(optima.obj, diploid.cell)
 \arguments{
 \item{optima.obj}{optima object.}
 
-\item{diploid.cell}{Cell type that should be considered as diploid cell}
+\item{diploid.cell}{The cell type that should be considered as diploid cell. This
+cell type should be one of cell types in the cell.labels vector.}
 }
 \value{
 optima object with normalized CNV

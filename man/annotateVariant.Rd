@@ -7,14 +7,14 @@
 annotateVariant(variant.names)
 }
 \arguments{
-\item{variant.names}{input variant IDs, can be a vector.}
+\item{variant.names}{Input variant IDs, can be a vector.}
 }
 \value{
-a data frame with annotation for all input variant IDs.
+A data frame with annotation for all input variant IDs.
 }
 \description{
 This function takes variant names as input and
-returns an annotation table for all variant IDs in a data frame.
+returns annotation for annotation table for all variant IDs in a data frame.
 }
 \examples{
 annotateVariant(variants_id)

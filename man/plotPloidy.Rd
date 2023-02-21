@@ -7,9 +7,9 @@
 plotPloidy(optima.obj, cell.type)
 }
 \arguments{
-\item{optima.obj}{optima object}
+\item{optima.obj}{optima object.}
 
-\item{cell.type}{String that indicates which cell type}
+\item{cell.type}{String that indicates which cell type,}
 }
 \value{
 optima object with normalized CNV.

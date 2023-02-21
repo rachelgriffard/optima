@@ -3,8 +3,8 @@
 #' The function normalizes the CNV matrix to correct for column-wise and row-wise variation and
 #' updates the optima object amp.normalize.method from "unnormalized" to "normalized".
 #'
-#' @param optima.obj optima object
-#' @return optima object with normalized CNV and amp.normalize.method updated to "normalized"
+#' @param optima.obj optima object.
+#' @return optima object with normalized CNV and amp.normalize.method updated to "normalized".
 #' @keywords optima.obj
 #' @export
 #' @examples normalizeCNV(optima.obj)
@@ -31,7 +31,8 @@ normalizeCNV <- function(optima.obj){
 #' The function uses the normalized CNV matrix to calculate the ploidy for each CNV locus.
 #'
 #' @param optima.obj optima object.
-#' @param diploid.cell Cell type that should be considered as diploid cell
+#' @param diploid.cell The cell type that should be considered as diploid cell. This
+#' cell type should be one of cell types in the cell.labels vector.
 #' @return optima object with normalized CNV
 #' @keywords optima.obj with ploidy.mtx being updated
 #' @export
@@ -42,6 +43,7 @@ calculatePloidy <- function(optima.obj, diploid.cell){
   # check normalization is done
   stopifnot(optima.obj@amp.normalize.method == "normalized")
   stopifnot(length(optima.obj@cell.labels) == nrow(optima.obj@amp.mtx))
+  stopifnot(length(unique(optima.obj@cell.labels)) > 1)
 
   # get cnv matrix
   cnv.mtx <- optima.obj@amp.mtx
@@ -63,8 +65,8 @@ calculatePloidy <- function(optima.obj, diploid.cell){
 #' For a specified cell type, this function creates a scatter plot indicating
 #' ploidy for different CNV loci.
 #'
-#' @param optima.obj optima object
-#' @param cell.type String that indicates which cell type
+#' @param optima.obj optima object.
+#' @param cell.type String that indicates which cell type,
 #' @return optima object with normalized CNV.
 #' @keywords optima.obj
 #' @export
@@ -80,6 +82,8 @@ plotPloidy <- function(optima.obj, cell.type){
   # take median
   num.ploidy <- apply(optima.obj@ploidy.mtx[optima.obj@cell.labels == cell.type,] ,2, median)
 
+  # plot
+  par(mar=c(10, 4, 4, 4), xpd=TRUE)
   plot(1:length(num.ploidy), num.ploidy,
        xlab = "",
        xaxt="n",
@@ -89,4 +93,47 @@ plotPloidy <- function(optima.obj, cell.type){
        labels = optima.obj@amps,
        las=2,
        cex=0.5)
+
+  title(xlab="CNV loci",
+        line=8,
+        cex.lab=1.2,
+        family="Calibri Light")
+
+}
+
+
+
+#' The getter function for CNV matrix
+#'
+#' This function returns the CNV matrix within the optima object.
+#'
+#' @param optima.obj optima object.
+#' @return A matrix that contains CNV data in the optima object.
+#' The row names are cell id, the column names are CNV IDs.
+#' @export
+#' @examples getCNVmtx(my.obj)
+
+getCNVmtx <- function(optima.obj){
+  ret.mtx <- optima.obj@amp.mtx
+  colnames(ret.mtx) <- optima.obj@amps
+  rownames(ret.mtx) <- optima.obj@cell.ids
+  return(ret.mtx)
+}
+
+
+#' The getter function for Ploidy matrix
+#'
+#' This function returns the Ploidy matrix within the optima object.
+#'
+#' @param optima.obj optima object.
+#' @return A matrix that contains Ploidy data in the optima object.
+#' The row names are cell id, the column names are CNV IDs.
+#' @export
+#' @examples getPloidyMtx(my.obj)
+
+getPloidyMtx <- function(optima.obj){
+  ret.mtx <- optima.obj@ploidy.mtx
+  colnames(ret.mtx) <- optima.obj@amps
+  rownames(ret.mtx) <- optima.obj@cell.ids
+  return(ret.mtx)
 }

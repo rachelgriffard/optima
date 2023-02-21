@@ -16,24 +16,24 @@ filterVariant(
 )
 }
 \arguments{
-\item{optima.obj}{optima object with raw, unfiltered}
+\item{optima.obj}{An optima object with raw data unfiltered.}
 
-\item{min.dp}{minimum depth, defaults to 10}
+\item{min.dp}{Minimum depth, defaults to 10.}
 
-\item{min.gq}{minimum genotype quality, defaults to 30}
+\item{min.gq}{Minimum genotype quality, defaults to 30.}
 
-\item{vaf.ref}{If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3}
+\item{vaf.ref}{If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3.}
 
-\item{vaf.hom}{If homozygous call vaf (GT=2) is smaller than vaf.hom, then value in genotype call matrix is converted to GT=3}
+\item{vaf.hom}{If homozygous call vaf (GT=2) is smaller than vaf.hom, then value in genotype call matrix is converted to GT=3.}
 
-\item{vaf.het}{If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3}
+\item{vaf.het}{If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3.}
 
-\item{min.cell.pt}{minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter}
+\item{min.cell.pt}{Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter.}
 
-\item{min.mut.cell.pt}{minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter}
+\item{min.mut.cell.pt}{Minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter.}
 }
 \value{
-an optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".
+An optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".
 Meanwhile, the protein matrix and CNV matrix is also updated so that only cells withstand DNA variant filter are kept.
 }
 \description{

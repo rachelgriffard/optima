@@ -4,21 +4,27 @@
 \alias{findSignature}
 \title{Identify signature protein function}
 \usage{
-findSignature(optima.obj, cell.type)
+findSignature(optima.obj, cell.type, cell.type.2 = "all")
 }
 \arguments{
-\item{optima.obj}{optima object}
+\item{optima.obj}{optima object.}
 
-\item{cell.type}{Input cell type to compare protein level to all other cell types}
+\item{cell.type}{Input cell type to compare protein level to all other cell types.}
+
+\item{cell.type.2}{Second cell type to compare.}
 }
 \value{
 Data frame of all proteins p-values comparing protein levels of input
-cell type to all other cell types.
+cell type to all other cell types. In addition, it provides the mean difference between
+Input cell type and other cells. If mean difference is positive, this mean more expression
+in the cell type.
 }
 \description{
 This function compares protein levels for a input cell type against all other
-cells using t test and returns a data frame ranked by
+cells using t test. This function returns a data frame ranked by
 FDR adjusted p-value.
+If two cell types specified, then this function compares protein expression
+between the two cell types.
 }
 \examples{
 findSignature(optima.obj, cell.type)

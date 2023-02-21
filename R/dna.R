@@ -7,15 +7,15 @@
 #' In addition, the returned optima object's variant.filter label is changed to "filtered".
 #' This function is usually applied before protein and CNV analysis.
 #'
-#' @param optima.obj optima object with raw, unfiltered
-#' @param min.dp minimum depth, defaults to 10
-#' @param min.gq minimum genotype quality, defaults to 30
-#' @param vaf.ref If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3
-#' @param vaf.hom If homozygous call vaf (GT=2) is smaller than vaf.hom, then value in genotype call matrix is converted to GT=3
-#' @param vaf.het If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3
-#' @param min.cell.pt minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter
-#' @param min.mut.cell.pt minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter
-#' @return an optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".
+#' @param optima.obj An optima object with raw data unfiltered.
+#' @param min.dp Minimum depth, defaults to 10.
+#' @param min.gq Minimum genotype quality, defaults to 30.
+#' @param vaf.ref If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3.
+#' @param vaf.hom If homozygous call vaf (GT=2) is smaller than vaf.hom, then value in genotype call matrix is converted to GT=3.
+#' @param vaf.het If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3.
+#' @param min.cell.pt Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter.
+#' @param min.mut.cell.pt Minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter.
+#' @return An optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".
 #' Meanwhile, the protein matrix and CNV matrix is also updated so that only cells withstand DNA variant filter are kept.
 #' @keywords filter DNA
 #' @export
@@ -70,11 +70,19 @@ filterVariant <- function(optima.obj,
   cell.variants.keep.tf <- rowSums(gt.mtx != 3) > num.variants * min.cell.pt / 100
   c.names <- optima.obj@cell.ids[cell.variants.keep.tf]
 
+  if(optima.obj@proteins == "non-protein"){
+    print("non-pro")
+    my.protein.mtx <- optima.obj@protein.mtx
+  } else {
+    my.protein.mtx <- optima.obj@protein.mtx[cell.variants.keep.tf, ]
+  }
+
+
   # generate new object
   filtered.obj <- new("optima", meta.data=optima.obj@meta.data,
 
                       cell.ids = optima.obj@cell.ids[cell.variants.keep.tf],
-                      cell.labels = optima.obj@cell.labels,
+                      cell.labels = optima.obj@cell.labels[cell.variants.keep.tf],
                       # DNA variant
                       variants = optima.obj@variants[variant.keep.tf],
                       variant.filter = "filtered",
@@ -91,14 +99,20 @@ filterVariant <- function(optima.obj,
                       # protein
                       proteins = optima.obj@proteins,
                       protein.normalize.method = optima.obj@protein.normalize.method,
-                      protein.mtx = optima.obj@protein.mtx[cell.variants.keep.tf, ])
+                      protein.mtx = my.protein.mtx)
 
+  # print some useful numbers
+  cat("Number of cells removed: ")
+  cat(length(cell.variants.keep.tf) - sum(cell.variants.keep.tf))
+  cat("\nNumber of variants removed: ")
+  cat(length(variant.keep.tf) - sum(variant.keep.tf))
+  cat("\n")
   return(filtered.obj)
 }
 
 #' Single variant ID annotation function
 #'
-#' This function returns the annotation from one variant ID. This function is not visable to users.
+#' Returns annotation from one variant ID. This function is not visable to users.
 #'
 #' @param variant variant name in a string
 #' @import httr
@@ -143,11 +157,11 @@ getInfo <- function(variant){
 #' Variant annotation
 #'
 #' This function takes variant names as input and
-#' returns an annotation table for all variant IDs in a data frame.
+#' returns annotation for annotation table for all variant IDs in a data frame.
 #'
-#' @param variant.names input variant IDs, can be a vector.
+#' @param variant.names Input variant IDs, can be a vector.
 #' @keywords variant
-#' @return a data frame with annotation for all input variant IDs.
+#' @return A data frame with annotation for all input variant IDs.
 #' @export
 #' @examples annotateVariant(variants_id)
 #'
@@ -177,7 +191,7 @@ annotateVariant <- function(variant.names){
 #'
 #' This function identifies cell clones based on DNA variant data.
 #'
-#' @param optima.obj optima object
+#' @param optima.obj optima object.
 #' @param eps size/radius of the epsilon neighborhood.
 #' This argument will passed to dbscan function.
 #' @param minPts number of minimum points required in the eps neighborhood
@@ -192,22 +206,49 @@ annotateVariant <- function(variant.names){
 #' @examples getClones(my.obj)
 getClones <- function(optima.obj, eps = 1, minPts = 100, plot = FALSE){
   # dimension reduction using PCA and UMAP
-  variant.reduceDim <- reduceDim(my.obj.filtered@vaf.mtx)
+  variant.reduceDim <- reduceDim(optima.obj@vaf.mtx)
 
   # Use input from UMAP (two columns) for dbscan clustering
   dbscanRet <- dbscan::dbscan(variant.reduceDim[[2]][[1]],
-                      eps = eps,
-                      minPts = minPts)
+                              eps = eps,
+                              minPts = minPts)
 
   # assign cell label
-  my.obj.filtered@cell.labels <- as.character(dbscanRet$cluster+1)
-  return(my.obj.filtered)
+  optima.obj@cell.labels <- as.character(dbscanRet$cluster+1)
+
 
   if(plot){
+
+    par(mar=c(5, 4, 4, 8), xpd=TRUE)
+
     plot(variant.reduceDim[[2]][[1]],
-         col=dbscanRet$cluster+1,
-         xlab = "UMAP plot",
-         ylab = "",
-         main=my.obj.filtered@meta.data)
+         col=topo.colors(length(unique(optima.obj@cell.labels)))[as.factor(optima.obj@cell.labels)],
+         xlab = "UMAP1",
+         ylab = "UMAP2",
+         main=paste(optima.obj@meta.data, "UMAP plot"))
+
+    legend("topright", inset=c(-0.3, 0),
+           title="Cell type",
+           unique(optima.obj@cell.labels),
+           fill=topo.colors(length(unique(optima.obj@cell.labels))),
+           cex=0.8)
   }
+  return(optima.obj)
+}
+
+#' The getter function for VAF matrix
+#'
+#' This function returns the VAF matrix within the optima object.
+#'
+#' @param optima.obj optima object.
+#' @return A matrix that contains VAF data in the optima object.
+#' The row names are cell id, the column names are variant ID.
+#' @export
+#' @examples getDNAmtx(my.obj)
+
+getDNAmtx <- function(optima.obj){
+  ret.mtx <- optima.obj@vaf.mtx
+  colnames(ret.mtx) <- optima.obj@variants
+  rownames(ret.mtx) <- optima.obj@cell.ids
+  return(ret.mtx)
 }

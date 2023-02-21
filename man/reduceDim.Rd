@@ -2,12 +2,12 @@
 % Please edit documentation in R/optima.R
 \name{reduceDim}
 \alias{reduceDim}
-\title{Dimension reduction function.}
+\title{Dimension reduction function}
 \usage{
 reduceDim(input.mtx)
 }
 \arguments{
-\item{input.mtx}{Input optima object}
+\item{input.mtx}{Input optima object.}
 }
 \value{
 List containing PCA result and umap result derived from first 5 PCs

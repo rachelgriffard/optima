@@ -15,42 +15,42 @@ single cell sequencing data.
 \section{Slots}{
 
 \describe{
-\item{\code{meta.data}}{user defined metadata can be kept with the object}
+\item{\code{meta.data}}{User-defined metadata can be kept with the object.}
 
-\item{\code{cell.ids}}{a vector of cell IDs/barcodes from Tapestri. This
-vector should contain unique IDs}
+\item{\code{cell.ids}}{A vector of cell IDs/barcodes from Tapestri. This
+vector should contain unique IDs.}
 
-\item{\code{cell.labels}}{a vector that is used to store the cell type information
-for each cell}
+\item{\code{cell.labels}}{A vector that is used to store the cell type information
+for each cell.}
 
-\item{\code{variants}}{a vector of variant IDs}
+\item{\code{variants}}{A vector of variant IDs.}
 
-\item{\code{variant.filter}}{a string that keeps track of if optima object is being QC filtered
-on its variant matrix}
+\item{\code{variant.filter}}{A string that keeps track of if optima object is being QC filtered
+on its variant matrix.}
 
-\item{\code{vaf.mtx}}{variant matrix}
+\item{\code{vaf.mtx}}{Variant matrix.}
 
-\item{\code{gt.mtx}}{genotype matrix}
+\item{\code{gt.mtx}}{Genotype matrix.}
 
-\item{\code{dp.mtx}}{sequencing depth matrix}
+\item{\code{dp.mtx}}{Sequencing depth matrix.}
 
-\item{\code{gq.mtx}}{genotype quality}
+\item{\code{gq.mtx}}{Genotype quality.}
 
-\item{\code{amps}}{a vector of CNV locus}
+\item{\code{amps}}{A vector of CNV locus.}
 
-\item{\code{amp.normalized.method}}{a string that keeps track of if optima object is being normalized
-on its CNV matrix}
+\item{\code{amp.normalized.method}}{A string that keeps track of if optima object is being normalized
+on its CNV matrix.}
 
-\item{\code{amp.mtx}}{CNV matrix}
+\item{\code{amp.mtx}}{CNV matrix.}
 
-\item{\code{ploidy.mtx}}{ploidy matrix}
+\item{\code{ploidy.mtx}}{Ploidy matrix.}
 
-\item{\code{proteins}}{a vector of surface protein id}
+\item{\code{proteins}}{A vector of surface protein ID.}
 
-\item{\code{protein.normalize.method}}{a string that keeps track of if optima object is being normalized
-on its protein matrix}
+\item{\code{protein.normalize.method}}{A string that keeps track of if optima object is being normalized
+on its protein matrix.}
 
-\item{\code{protein.mtx}}{protein matrix}
+\item{\code{protein.mtx}}{Protein matrix}
 }}
 
 \examples{

@@ -1,43 +1,47 @@
 #' Protein matrix normalization
 #'
-#' The function normalizes the protein matrix within an optima object using
+#' The function normalizes protein matrix within an optima object using
 #' CLR method.
 #'
-#' @param optima.obj optima object
-#' @return An optima object with protein matrix being normalized and
-#'  protein.normalize.method label updated to "normalized"
+#' @param optima.obj optima object.
 #' @import compositions
+#' @return An optima object with protein matrix being normalized and
+#'  protein.normalize.method label updated to "normalized".
 #' @keywords optima.obj
 #' @export
-#' @examples normalizeProtein(optima.obj)
+#' @examples normalizeProtein(optima.object)
 
-normalizeProtein <- function(optima.obj) {
+normalizeProtein <- function(optima.object) {
   # extract count matrix
-  inputMatrix <- optima.obj@protein.mtx
+  inputMatrix <- optima.object@protein.mtx
   # apply normalization CLR method
   ret <- (compositions::clr(inputMatrix + 1))
 
-  optima.obj@protein.mtx <- as.matrix(ret)
-  optima.obj@protein.normalize.method <- "normalized"
-  return(optima.obj)
-
+  optima.object@protein.mtx <- as.matrix(ret)
+  optima.object@protein.normalize.method <- "normalized"
+  return(optima.object)
 }
 
 #' Identify signature protein function
 #'
 #' This function compares protein levels for a input cell type against all other
-#' cells using t test and returns a data frame ranked by
+#' cells using t test. This function returns a data frame ranked by
 #' FDR adjusted p-value.
+#' If two cell types specified, then this function compares protein expression
+#' between the two cell types.
 #'
-#' @param optima.obj optima object
-#' @param cell.type Input cell type to compare protein level to all other cell types
+#' @param optima.obj optima object.
+#' @param cell.type Input cell type to compare protein level to all other cell types.
+#' @param cell.type.2 Second cell type to compare.
 #' @return Data frame of all proteins p-values comparing protein levels of input
-#' cell type to all other cell types.
+#' cell type to all other cell types. In addition, it provides the mean difference between
+#' Input cell type and other cells. If mean difference is positive, this mean more expression
+#' in the cell type.
 #' @keywords optima.obj, cell.type
 #' @export
 #' @examples findSignature(optima.obj, cell.type)
 
-findSignature <- function(optima.obj, cell.type){
+findSignature <- function(optima.obj, cell.type, cell.type.2 = "all"){
   # check data is normalized
   stopifnot(optima.obj@protein.normalize.method == "normalized")
 
@@ -47,23 +51,50 @@ findSignature <- function(optima.obj, cell.type){
   # extract all proteins
   proteins <- optima.obj@proteins
 
-  p_val_df <- data.frame(matrix(ncol = 2, nrow = length(proteins)))
-  colnames(p_val_df) <- c("p_val", "p_val_adj")
+  p_val_df <- data.frame(matrix(ncol = 3, nrow = length(proteins)))
+  colnames(p_val_df) <- c("p_val", "p_val_adj", "mean_diff")
   rownames(p_val_df) <- proteins
 
   for (protein in proteins){
 
     # subset data
     group.1 <- optima.obj@protein.mtx[optima.obj@cell.labels == cell.type, optima.obj@proteins == protein]
-    group.2 <- optima.obj@protein.mtx[optima.obj@cell.labels != cell.type, optima.obj@proteins == protein]
+
+    if(cell.type.2 %in% optima.obj@cell.labels){
+      group.2 <- optima.obj@protein.mtx[optima.obj@cell.labels == cell.type.2, optima.obj@proteins == protein]
+    } else if (cell.type.2 == "all"){
+      group.2 <- optima.obj@protein.mtx[optima.obj@cell.labels != cell.type, optima.obj@proteins == protein]
+    }
+
+    mean.diff <- mean(group.1) - mean(group.2)
 
     # conduct analysis
     ret <- t.test(group.1, group.2)$p.value
     p_val_df[protein, "p_val"] <- ret
+    p_val_df[protein, "mean_diff"] <- mean.diff
   }
 
   p_val_df[,"p_val_adj"] <- p.adjust(p_val_df$p_val, method="fdr")
 
   order <- order(p_val_df[,"p_val_adj"])
   return(p_val_df[order, ])
+}
+
+
+
+#' The getter function for Protein matrix
+#'
+#' This function returns the Protein matrix within the optima object.
+#'
+#' @param optima.obj optima object.
+#' @return A matrix that contains Protein data in the optima object.
+#' The row names are cell IDs, the column names are protein IDs.
+#' @export
+#' @examples getProteinMtx(my.obj)
+
+getProteinMtx <- function(optima.obj){
+  ret.mtx <- optima.obj@protein.mtx
+  colnames(ret.mtx) <- optima.obj@proteins
+  rownames(ret.mtx) <- optima.obj@cell.ids
+  return(ret.mtx)
 }

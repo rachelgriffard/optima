@@ -4,10 +4,15 @@
 \alias{readHdf5}
 \title{H5 file to optima object function}
 \usage{
-readHdf5(directory)
+readHdf5(directory, sample.name, omic.type = "DNA+protein")
 }
 \arguments{
-\item{directory}{Directory for the input h5 file}
+\item{directory}{Directory for the input h5 file.}
+
+\item{sample.name}{A sample name that will be used naming visualizations.}
+
+\item{omic.type}{This parameter indicates if the data set is DNA only or DNA+protein. It has
+two possible values: "DNA+protein" or "DNA". The default value is "DNA+protein".}
 }
 \value{
 optima object

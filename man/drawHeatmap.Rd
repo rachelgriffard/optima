@@ -9,13 +9,15 @@ drawHeatmap(optima.obj, omic.type)
 \arguments{
 \item{optima.obj}{optima object.}
 
-\item{omic.type}{Type of data for heat map. Potential values "dna" and "protein".}
+\item{omic.type}{Type of data for heat map. Potential values "dna" and "protein". If "dna"
+is specified, then the VAF data will be used for plot. If "protein" is specified, then
+protein expression values will be used.}
 }
 \value{
 Heat map visualization.
 }
 \description{
-This function creates a heatmap using matrix data, such matrix
+This function creates a heatmap using matrix data. Matrix
 data can be DNA or protein.
 }
 \examples{
