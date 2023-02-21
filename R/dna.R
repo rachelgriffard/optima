@@ -70,8 +70,8 @@ filterVariant <- function(optima.obj,
   cell.variants.keep.tf <- rowSums(gt.mtx != 3) > num.variants * min.cell.pt / 100
   c.names <- optima.obj@cell.ids[cell.variants.keep.tf]
 
-  if(optima.obj@proteins == "non-protein"){
-    print("non-pro")
+  if(optima.obj@proteins[1] == "non-protein"){
+    print("non-protein")
     my.protein.mtx <- optima.obj@protein.mtx
   } else {
     my.protein.mtx <- optima.obj@protein.mtx[cell.variants.keep.tf, ]
