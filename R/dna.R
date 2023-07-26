@@ -8,13 +8,13 @@
 #' This function is usually applied before protein and CNV analysis.
 #'
 #' @param optima.obj An optima object with raw data unfiltered.
-#' @param min.dp Minimum depth, defaults to 10.
-#' @param min.gq Minimum genotype quality, defaults to 30.
+#' @param min.dp Minimum depth, defaults to 10. Read depth ranges from 0 to positive infinity. When to change: If your sample ended up with more cells being sequenced than planned, then you may have less reads per cell. In such cases, you could try to lower this parameter to 7, 8 or 9. It is not common to increase this parameter above 10.
+#' @param min.gq Minimum genotype quality. The default value is 30. The possible range of GQ score is 0-99. This GQ score is derived from GATK.  A higher score means a more confident genotype call. A lower score means genotype call with low confidence. When to change: You may consider decreasing the threshold when the reads sequencing quality is low overall.
 #' @param vaf.ref If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3.
 #' @param vaf.hom If homozygous call vaf (GT=2) is smaller than vaf.hom, then value in genotype call matrix is converted to GT=3.
-#' @param vaf.het If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3.
-#' @param min.cell.pt Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter.
-#' @param min.mut.cell.pt Minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter.
+#' @param vaf.het If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3. If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3. The default value is 35. For heterozygous cell, there should be 50/50 in two alleles, respectively. However, due to sampling error, there are chances when we sequenced more reads in one allele than the other. This parameter allows for tolerating such situations. We don’t normally change this parameter.
+#' @param min.cell.pt Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter. Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter. The default value is 50%. This means for one variant; we need at least 50% of cells have a valid variant call. When to change: If the variant of interest is in a high GC content region, then PCR amplification is hard. In such cases, you may choose to decrease the percent to 30 or 40 so that your interested variant could come through the filter.
+#' @param min.mut.cell.pt Minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter. The default is 1, corresponds to 1%. This filter is used to remove false positives. When to change: If you know the variant is rare in the data, then you could try lower threshold to try to keep the variant in your dataset.
 #' @return An optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".
 #' Meanwhile, the protein matrix and CNV matrix is also updated so that only cells withstand DNA variant filter are kept.
 #' @keywords filter DNA
@@ -201,20 +201,32 @@ annotateVariant <- function(variant.names){
 #' result from variant matrix.
 #' Default is FALSE.
 #' @import dbscan
-#' @return Data frame with annotation for all input variant IDs.
+#' @return A list, the first element in the list is the optima
+#' object with labels assigned based on dbscan. the second element
+#' in the list is the dimension reduction result based on VAF matrix.
 #' @export
 #' @examples getClones(my.obj)
-getClones <- function(optima.obj, eps = 1, minPts = 100, plot = FALSE){
+getClones <- function(optima.obj,
+                      eps = 1,
+                      minPts = 100,
+                      num.PC = 5,
+                      plot = FALSE){
   # dimension reduction using PCA and UMAP
-  variant.reduceDim <- reduceDim(optima.obj@vaf.mtx)
+  variant.reduceDim <- reduceDim(optima.obj@vaf.mtx, num.PC = num.PC)
 
   # Use input from UMAP (two columns) for dbscan clustering
   dbscanRet <- dbscan::dbscan(variant.reduceDim[[2]][[1]],
                               eps = eps,
                               minPts = minPts)
 
+  # convert dbscan cluster labels so that they are correctly ordered
+  x <- dbscanRet$cluster
+  old <- unique(x)
+  new <- 1:length(old)
+  x[x %in% old] <- new[match(x, old, nomatch = 0)]
+
   # assign cell label
-  optima.obj@cell.labels <- as.character(dbscanRet$cluster+1)
+  optima.obj@cell.labels <- as.character(x)
 
 
   if(plot){
@@ -233,7 +245,7 @@ getClones <- function(optima.obj, eps = 1, minPts = 100, plot = FALSE){
            fill=topo.colors(length(unique(optima.obj@cell.labels))),
            cex=0.8)
   }
-  return(optima.obj)
+  return(list(optima.obj, variant.reduceDim))
 }
 
 #' The getter function for VAF matrix
@@ -251,4 +263,39 @@ getDNAmtx <- function(optima.obj){
   colnames(ret.mtx) <- optima.obj@variants
   rownames(ret.mtx) <- optima.obj@cell.ids
   return(ret.mtx)
+}
+
+
+#' Plot specific variant VAF levels
+#'
+#' This function create a plot based on VAF dimension reduction result.
+#' Within the plot, Each cell was colored based on the VAF
+#'
+#' @param optima.obj optima object.
+#' @param vaf.name the specific variant name user interested
+#' @param reduceDim.obj dimension reduction result returned by reduceDim() function.
+#' @import ggplot2
+#' @return A scatter plot based on dimension reduction result. Each cell is colored
+#' based on the protein level. The more expression.
+#' @export
+#' @examples plotVariantFeature(my.obj, "chr4:106190862:T/C", vaf.reduceDim)
+
+
+plotVariantFeature <- function(optima.obj,
+                               vaf.name,
+                               reduceDim.obj){
+
+  # get variant expression value
+  values = getDNAmtx(my.obj.filtered)[,vaf.name]
+
+
+  my.df <- data.frame(UMAP1 = reduceDim.obj[[2]][[1]][,1],
+                      UMAP2 = reduceDim.obj[[2]][[1]][,2],
+                      VAF = values)
+
+  ggplot(my.df, aes(UMAP1, UMAP2)) +
+    geom_point(aes(color = VAF), size = 2)+
+    theme_classic() +
+    ggtitle(paste(vaf.name, "VAF"))
+
 }

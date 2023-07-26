@@ -98,3 +98,42 @@ getProteinMtx <- function(optima.obj){
   rownames(ret.mtx) <- optima.obj@cell.ids
   return(ret.mtx)
 }
+
+
+
+#' Plot specific protein levels
+#'
+#' This function create a plot based on protein level dimension reduction result.
+#' Within the plot, Each cell was colored based on the protein level
+#'
+#' @param optima.obj optima object.
+#' @param protein.name the specific protein user interested
+#' @param reduceDim.obj dimension reduction result returned by reduceDim() function.
+#' @import ggplot2
+#' @return A scatter plot based on dimension reduction result. Each cell is colored
+#' based on the protein level. The more expression.
+#' @export
+#' @examples plotProteinFeature(my.obj, "CD11b", protein.reduceDim)
+
+
+plotProteinFeature <- function(optima.obj,
+                               protein.name,
+                               reduceDim.obj){
+
+  # get protein expression value
+  values = getProteinMtx(optima.obj)[,protein.name]
+
+  # get protein expression value
+  values <-  getProteinMtx(optima.obj)[,protein.name]
+
+  my.df <- data.frame(UMAP1 = reduceDim.obj[[2]][[1]][,1],
+                      UMAP2 = reduceDim.obj[[2]][[1]][,2],
+                      normalized_exp = values)
+
+  ggplot(my.df, aes(UMAP1, UMAP2)) +
+    geom_point(aes(color = normalized_exp), size = 2)+
+    theme_classic() +
+    ggtitle(paste(protein.name, "normalized expression"))
+
+
+}

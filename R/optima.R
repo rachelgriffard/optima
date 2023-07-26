@@ -12,7 +12,7 @@
 #' @slot variant.filter A string that keeps track of if optima object is being QC filtered
 #' on its variant matrix.
 #' @slot vaf.mtx Variant matrix.
-#' @slot gt.mtx Genotype matrix.
+#' @slot gt.mtx Genotype matrix, The integers within matrix are reference call GT=0, heterozygous call GT=1, homozygous call GT=2, no calls GT = 3.
 #' @slot dp.mtx Sequencing depth matrix.
 #' @slot gq.mtx Genotype quality.
 #' @slot amps A vector of CNV locus.
@@ -96,20 +96,45 @@ names.optima <- function(x) {
 }
 
 
+#' Generate elbow plot
+#'
+#' This function generate an elbow plot. The plot is useful for determining how many PCs will be used for dimension reduction
+#' The input matrix can be the DNA matrix in an optima object.
+#'
+#' @param input.mtx Input matrix
+#' @return an elbow plot
+#' @examples elbowPlot(example.matrix)
+#' @export
+elbowPlot <- function(input.mtx){
+
+  pca <- prcomp(input.mtx)
+
+  pca.sd <- pca$sdev
+
+  plot(x = 1:length(pca.sd),
+       y = pca.sd,
+       xlab = "PC",
+       ylab = "Standard Deviation")
+
+}
+
+
+
 #' Dimension reduction function
 #'
 #' This function reduces dimensions for a data matrix, such data matrix
 #' can be protein or DNA matrix in an optima object.
 #'
 #' @param input.mtx Input optima object.
+#' @param num.PC The number of PCs being used for preserving variation. Default is 5
 #' @import umap
 #' @return List containing PCA result and umap result derived from first 5 PCs
 #' @examples reduceDim(example.matrix)
 #' @export
 
-reduceDim <- function(input.mtx){
+reduceDim <- function(input.mtx, num.PC = 5){
   pca <- prcomp(input.mtx)
-  my_umap <- umap::umap(pca$x[,1:5])
+  my_umap <- umap::umap(pca$x[,1:num.PC])
   return(list(pca, my_umap))
 }
 
