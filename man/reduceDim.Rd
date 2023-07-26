@@ -4,10 +4,12 @@
 \alias{reduceDim}
 \title{Dimension reduction function}
 \usage{
-reduceDim(input.mtx)
+reduceDim(input.mtx, num.PC = 5)
 }
 \arguments{
 \item{input.mtx}{Input optima object.}
+
+\item{num.PC}{The number of PCs being used for preserving variation. Default is 5}
 }
 \value{
 List containing PCA result and umap result derived from first 5 PCs

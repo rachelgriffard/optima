@@ -30,7 +30,7 @@ on its variant matrix.}
 
 \item{\code{vaf.mtx}}{Variant matrix.}
 
-\item{\code{gt.mtx}}{Genotype matrix.}
+\item{\code{gt.mtx}}{Genotype matrix, The integers within matrix are reference call GT=0, heterozygous call GT=1, homozygous call GT=2, no calls GT = 3.}
 
 \item{\code{dp.mtx}}{Sequencing depth matrix.}
 

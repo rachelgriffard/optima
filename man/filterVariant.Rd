@@ -18,19 +18,19 @@ filterVariant(
 \arguments{
 \item{optima.obj}{An optima object with raw data unfiltered.}
 
-\item{min.dp}{Minimum depth, defaults to 10.}
+\item{min.dp}{Minimum depth, defaults to 10. Read depth ranges from 0 to positive infinity. When to change: If your sample ended up with more cells being sequenced than planned, then you may have less reads per cell. In such cases, you could try to lower this parameter to 7, 8 or 9. It is not common to increase this parameter above 10.}
 
-\item{min.gq}{Minimum genotype quality, defaults to 30.}
+\item{min.gq}{Minimum genotype quality. The default value is 30. The possible range of GQ score is 0-99. This GQ score is derived from GATK.  A higher score means a more confident genotype call. A lower score means genotype call with low confidence. When to change: You may consider decreasing the threshold when the reads sequencing quality is low overall.}
 
 \item{vaf.ref}{If reference call vaf (GT=0) is larger than vaf.ref, then value in genotype call matrix is converted to GT=3.}
 
 \item{vaf.hom}{If homozygous call vaf (GT=2) is smaller than vaf.hom, then value in genotype call matrix is converted to GT=3.}
 
-\item{vaf.het}{If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3.}
+\item{vaf.het}{If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3. If heterozygous call vaf (GT=1) is smaller than vaf.ref, then value in genotype call matrix is converted to GT=3. The default value is 35. For heterozygous cell, there should be 50/50 in two alleles, respectively. However, due to sampling error, there are chances when we sequenced more reads in one allele than the other. This parameter allows for tolerating such situations. We don’t normally change this parameter.}
 
-\item{min.cell.pt}{Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter.}
+\item{min.cell.pt}{Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter. Minimum threshold for cell percentage that has valid variant call (GT = 0, 1 or 2) after applying the filter. The default value is 50\%. This means for one variant; we need at least 50\% of cells have a valid variant call. When to change: If the variant of interest is in a high GC content region, then PCR amplification is hard. In such cases, you may choose to decrease the percent to 30 or 40 so that your interested variant could come through the filter.}
 
-\item{min.mut.cell.pt}{Minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter.}
+\item{min.mut.cell.pt}{Minimum threshold for cell percentage that has mutated genotype (GT = 1 or 2) after applying the filter. The default is 1, corresponds to 1\%. This filter is used to remove false positives. When to change: If you know the variant is rare in the data, then you could try lower threshold to try to keep the variant in your dataset.}
 }
 \value{
 An optima object, The DNA data in the object is filtered, the variant.filter label is "filtered".

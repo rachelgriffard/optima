@@ -4,7 +4,7 @@
 \alias{getClones}
 \title{Clustering variant function}
 \usage{
-getClones(optima.obj, eps = 1, minPts = 100, plot = FALSE)
+getClones(optima.obj, eps = 1, minPts = 100, num.PC = 5, plot = FALSE)
 }
 \arguments{
 \item{optima.obj}{optima object.}
@@ -21,7 +21,9 @@ result from variant matrix.
 Default is FALSE.}
 }
 \value{
-Data frame with annotation for all input variant IDs.
+A list, the first element in the list is the optima
+object with labels assigned based on dbscan. the second element
+in the list is the dimension reduction result based on VAF matrix.
 }
 \description{
 This function identifies cell clones based on DNA variant data.
