@@ -286,7 +286,7 @@ plotVariantFeature <- function(optima.obj,
                                reduceDim.obj){
 
   # get variant expression value
-  values = getDNAmtx(my.obj.filtered)[,vaf.name]
+  values = getDNAmtx(optima.obj)[,vaf.name]
 
 
   my.df <- data.frame(UMAP1 = reduceDim.obj[[2]][[1]][,1],
