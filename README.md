@@ -3,7 +3,7 @@ optima is an R package for the processing and analysis of data generated from th
 
 **Manuscript**: https://doi.org/10.1093/bioinformatics/btad611
 
-For questions on installation or usage, please submit an issue via GitHub or contact Dong Pei (dpei@kumc.edu) or Rachel Griffard (rgriffard@kumc.edu).
+For questions on installation or usage, please submit an issue via GitHub [discussions](https://github.com/rachelgriffard/optima/discussions), submit a problem via a pull request or in the [issues tab](https://github.com/rachelgriffard/optima/issues).
 
 Please **download** the [vignette file](https://github.com/rachelgriffard/optima/blob/main/vignette.html) file in this repository for a detailed run through of this package functionality.
 
