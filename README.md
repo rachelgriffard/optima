@@ -100,3 +100,7 @@ The drawHeatmap() function will take the protein matrix as input and draw a heat
 ```
 drawHeatmap(my.obj.filtered, omic.type = "protein")
 ```
+## Citation
+Please cite the *optima* package using the following citation:  
+  
+Pei, D., Griffard, R., Yellapu, N. K., Nissen, E., & Koestler, D. C. (2023). optima: an open-source R package for the Tapestri platform for integrative single cell multiomics data analysis. *Bioinformatics (Oxford, England), 39*(10), btad611. https://doi.org/10.1093/bioinformatics/btad611
