@@ -24,8 +24,7 @@ The latest opitma release is available for download from the [repository](https:
 ### 1. Read in data from h5 format
 ```
 my.obj <- readHdf5(directory = "4-cell-lines-AML-multiomics.dna+protein.h5",
-                   sample.name = "Four Cell Mix",![Uploading optima_flow.png…]()
-
+                   sample.name = "Four Cell Mix",
                    omic.type = "DNA+protein")
 class(my.obj)
 ```
